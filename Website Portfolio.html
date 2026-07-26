@@ -1,0 +1,440 @@
+<html lang="en" class="scroll-smooth"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Peck Jian Ye - Portfolio</title> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script> 
+
+    <script> 
+        tailwind.config = { 
+            theme: { 
+                extend: { 
+                    colors: { bgDark: '#09090b' } 
+                } 
+            } 
+        } 
+    </script> 
+
+    <style> 
+
+        body {
+
+            background-image: linear-gradient(rgba(9, 9, 11, 0.1), rgba(9, 9, 11, 0.1)), url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; 
+        }
+
+        .fade-up { 
+            opacity: 0; 
+            transform: translateY(20px); 
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out; 
+        } 
+        .fade-up.visible { 
+            opacity: 1; 
+            transform: translateY(0); 
+        } 
+
+        ::selection { 
+            background-color: rgba(168, 85, 247, 0.3); 
+        } 
+        
+        
+        @keyframes rgb-shift {
+            0% { background-position: 200% center; }
+            100% { background-position: 0% center; }
+        }
+        
+        .rgb-text {
+            background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: rgb-shift 4s linear infinite;
+        }
+
+        .nav-item.active .indicator-text {
+            color: #22d3ee; /* Cyan color matching your name */
+            font-weight: 700;
+        }
+        .nav-item.active .indicator-tick {
+            background-color: #22d3ee;
+            width: 1.5rem; /* Makes the active line slightly longer */
+        }
+	
+	/* --- RGB BORDER ON HOVER --- */
+        .rgb-border-hover::before {
+            content: "";
+            position: absolute;
+            inset: 0; /* Traces the exact edge of the card */
+            border-radius: inherit; /* Copies the rounded-2xl corners perfectly */
+            padding: 2px; /* This sets the thickness of the RGB border */
+            background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 200% auto;
+            /* The mask hollows out the center so ONLY the border shows */
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0; /* Hidden until you hover */
+            transition: opacity 0.3s ease-out;
+            pointer-events: none; /* Stops the border from blocking clicks */
+        }
+        
+        .rgb-border-hover:hover::before {
+            opacity: 1; /* Appears on hover */
+            animation: rgb-shift 3s linear infinite; /* Reuses your continuous RGB animation! */
+        }
+
+	/* --- BOARD STYLES --- */
+        .handwriting {
+            font-family: 'Patrick Hand', cursive;
+            color: #1c1917; /* Dark gray/brown text for readability */
+        }
+        .lined-paper {
+            background-color: #fdf6e3;
+            background-image: repeating-linear-gradient(transparent, transparent 1.5rem, #cbd5e1 1.5rem, #cbd5e1 1.6rem);
+        }
+        .pin {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #a1a1aa);
+            box-shadow: 2px 4px 6px rgba(0,0,0,0.4), inset -1px -1px 3px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        .board-pin {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #dc2626);
+            box-shadow: 2px 4px 4px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+	
+        .sticky-note {
+            /* A subtle gradient gives it a realistic lighting/paper curl effect */
+            background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.05) 100%);
+            /* Custom drop shadow to make the bottom look slightly peeled off the board */
+            box-shadow: 2px 6px 10px rgba(0,0,0,0.3), inset 0px -3px 10px rgba(0,0,0,0.05);
+        }
+        
+        /* Different Sticky Note Colors */
+        .sticky-yellow { background-color: #fef08a; } /* Classic Yellow */
+        .sticky-pink   { background-color: #ff65a3; } /* Neon Pink */
+        .sticky-blue   { background-color: #bae6fd; } /* Cyan Blue */
+        .sticky-green  { background-color: #bbf7d0; } /* Mint Green */
+	.sticky-magenta{ background-color: #ff00ff; } 
+	.sticky-silicon   { background-color: #D7DAE3; }
+
+        .tape {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 60px;
+            height: 25px;
+            background-color: rgba(255, 255, 230, 0.6); /* Semi-transparent tape color */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            backdrop-filter: blur(2px);
+            z-index: 10;
+        }
+
+        .tape::before, .tape::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255, 255, 230, 0.6) 2px, rgba(255, 255, 230, 0.6) 4px);
+        }
+        .tape::before { left: -4px; }
+        .tape::after { right: -4px; }
+
+    </style>
+
+        
+
+
+</head> 
+<body class="bg-bgDark text-zinc-300 min-h-screen font-sans antialiased p-8 md:p-24 selection:bg-purple-500/30"> 
+ 
+   <!-- Scroll Progress Indicator -->
+    <nav class="fixed right-4 md:right-12 top-1/2 -translate-y-1/2 z-50 hidden md:block">
+        <!-- The long vertical line -->
+        <div class="absolute right-[7px] top-2 bottom-2 w-[2px] bg-zinc-800"></div>
+        
+        <ul class="flex flex-col gap-6 relative">
+
+            <li>
+                <a href="#about" class="nav-item active group flex items-center justify-end gap-3 no-underline">
+                    <span class="text-sm font-medium text-zinc-500 transition-all duration-300 group-hover:text-zinc-200 indicator-text">About</span>
+                    <span class="w-3 h-[2px] bg-zinc-700 transition-all duration-300 group-hover:bg-zinc-300 indicator-tick"></span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#experience" class="nav-item group flex items-center justify-end gap-3 no-underline">
+                    <span class="text-sm font-medium text-zinc-500 transition-all duration-300 group-hover:text-zinc-200 indicator-text">Experience</span>
+                    <span class="w-3 h-[2px] bg-zinc-700 transition-all duration-300 group-hover:bg-zinc-300 indicator-tick"></span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#project" class="nav-item group flex items-center justify-end gap-3 no-underline">
+                    <span class="text-sm font-medium text-zinc-500 transition-all duration-300 group-hover:text-zinc-200 indicator-text">Project</span>
+                    <span class="w-3 h-[2px] bg-zinc-700 transition-all duration-300 group-hover:bg-zinc-300 indicator-tick"></span>
+                </a>
+            </li>
+
+	    <li>
+                <a href="#education" class="nav-item group flex items-center justify-end gap-3 no-underline">
+                    <span class="text-sm font-medium text-zinc-500 transition-all duration-300 group-hover:text-zinc-200 indicator-text">Education & Skills</span>
+                    <span class="w-3 h-[1px] bg-zinc-700 transition-all duration-300 group-hover:bg-zinc-300 indicator-tick"></span>
+                </a>
+            </li>
+
+	    <li>
+                <a href="#connect" class="nav-item group flex items-center justify-end gap-3 no-underline">
+                    <span class="text-sm font-medium text-zinc-500 transition-all duration-300 group-hover:text-zinc-200 indicator-text">Connect</span>
+                    <span class="w-3 h-[2px] bg-zinc-700 transition-all duration-300 group-hover:bg-zinc-300 indicator-tick"></span>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+<main class="max-w-2xl mx-auto space-y-24"> 
+        
+        <header id="about" class="scroll-mt-[30vh] space-y-6 pt-12 fade-up">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-zinc-100"> 
+                Hi, I'm <span class="rgb-text font-bold">Peck Jian Ye</span>. 
+            </h1> 
+	    <h2 class="text-xl text-zinc-100 font-bold fade-up">About</h2> 
+	    <div class="fade-up group relative p-6 rounded-2xl bg-slate-800/40 backdrop-blur-none hover:backdrop-blur-lg border border-transparent rgb-border-hover hover:bg-slate-700/50 transition-all duration-300 shadow-[0_0_20px_rgba(34,211,238,0.25)] hover:shadow-[0_0_35px_rgba(34,211,238,0.5)]">
+            <p class="text-lg font-bold text-zinc-100 leading-relaxed max-w-2xl"> Detail-oriented Mechatronic Engineering Graduate with a strong foundation in automation, robotics, and electro-mechanical systems. Proven ability to quickly master complex practical skills and adapt to dynamic engineering environments. Dedicated to applying technical knowledge to solve real-world problems and drive project efficiency. </p> 
+        </header> 
+        
+        <section id="experience" class="scroll-mt-[10vh] space-y-8"> 
+            <h2 class="text-xl font-bold text-zinc-100 fade-up">Experience</h2> 
+            <div class="space-y-4"> 
+                <div class="fade-up group relative p-6 rounded-2xl bg-slate-800/40 backdrop-blur-none hover:backdrop-blur-lg border border-transparent rgb-border-hover hover:bg-slate-700/50 transition-all duration-300 shadow-[0_0_20px_rgba(34,211,238,0.25)] hover:shadow-[0_0_35px_rgba(34,211,238,0.5)]">
+                    <h3 class="text-lg font-bold text-zinc-100 font-bold mb-2">GN ENGINEERING SDN.BHD</h3> 
+                    <p class="text-sm text-zinc-900 font-bold mb-2">19 June 2023 To 6 October 2023</p> 
+                    <p class="text-zinc-100 font-bold mb-4">Air conditioning and mechanical ventilation (ACMV) construction company. Managed site progress documents, AutoCAD 2D drawing modifications, and attended construction sites for testing and troubleshooting.</p> 
+                    <div class="flex flex-wrap gap-2"> 
+                        <span class="text-xs font-mono px-2.5 py-1 bg-zinc-800/50 text-zinc-300 rounded-md">AutoCAD</span> 
+                        <span class="text-xs font-mono px-2.5 py-1 bg-zinc-800/50 text-zinc-300 rounded-md">Site Management</span> 
+                        <span class="text-xs font-mono px-2.5 py-1 bg-zinc-800/50 text-zinc-300 rounded-md">Troubleshooting</span> 
+                    </div> 
+                </div> 
+                
+               <div class="fade-up group relative p-6 rounded-2xl bg-slate-800/40 backdrop-blur-none hover:backdrop-blur-lg border border-transparent rgb-border-hover hover:bg-slate-700/50 transition-all duration-300 shadow-[0_0_20px_rgba(34,211,238,0.25)] hover:shadow-[0_0_35px_rgba(34,211,238,0.5)]">
+                    <h3 class="text-lg font-bold text-zinc-100 font-bold mb-2">TECHCAPITAL RESOURCES SDN.BHD</h3> 
+                    <p class="text-sm text-zinc-900 font-bold mb-2">27 October 2025 to 16 January 2026</p> 
+                    <p class="text-zinc-100 font-bold mb-4">Robotic solution design (service provider) engineering company. Handled customization design of workstations, assembling, testing, and on-site technical installation.</p> 
+                    <div class="flex flex-wrap gap-2"> 
+                        <span class="text-xs font-mono px-2.5 py-1 bg-zinc-800/50 text-zinc-300 rounded-md">Solidworks 3D</span> 
+                        <span class="text-xs font-mono px-2.5 py-1 bg-zinc-800/50 text-zinc-300 rounded-md">Python</span> 
+                        <span class="text-xs font-mono px-2.5 py-1 bg-zinc-800/50 text-zinc-300 rounded-md">Robotics</span> 
+                    </div> 
+                </div> 
+            </div> 
+        </section> 
+
+        <section id="project" class="scroll-mt-[10vh] space-y-8">
+            <h2 class="text-xl font-bold text-zinc-100 fade-up">Project</h2> 
+            <div class="space-y-4"> 
+                <div class="fade-up group relative p-6 rounded-2xl bg-slate-800/40 backdrop-blur-none hover:backdrop-blur-lg border border-transparent rgb-border-hover hover:bg-slate-700/50 transition-all duration-300 shadow-[0_0_20px_rgba(34,211,238,0.25)] hover:shadow-[0_0_35px_rgba(34,211,238,0.5)]">
+                    <img src="Demo project.gif" alt="Demo project" class="max-w-[300px] w-full mx-auto block h-auto rounded-xl mb-4 border border-zinc-800"> 
+                    <h3 class="text-lg font-medium text-zinc-100 font-bold mb-2">Final year project</h3> 
+                    <p class="text-sm text-zinc-900 font-bold mb-2">Bachelor of Mechatronics Engineering With Honours</p> 
+                    <p class="text-zinc-100 font-bold mb-4">Building production line simulation model and analysis through visualisation of system behaviour with different zoning strategies by using open source software.</p> 
+                    <div class="flex flex-wrap gap-2"> 
+                        <span class="text-xs font-mono px-2.5 py-1 bg-zinc-800/50 text-zinc-300 rounded-md">Python</span> 
+                    </div> 
+                </div> 
+            </div> 
+        </section> 
+
+        <section id="education" class="scroll-mt-[10vh] space-y-8">
+            <h2 class="text-xl font-bold text-zinc-100 fade-up">Education & Skills</h2>
+            
+            <!-- Frosted Glass Board Container -->
+            <div class="relative w-full h-[700px] fade-up bg-slate-800/40 backdrop-blur-lg rounded-2xl border border-cyan-400/30 overflow-hidden shadow-[0_0_20px_rgba(34,211,238,0.15)]">              
+
+                <div class="board-pin" style="top: 10%; left: 42.5%;"></div>
+                <div class="board-pin" style="top: 45%; left: 45%;"></div>
+
+                <div class="absolute top-[5%] left-[5%] w-[35%] sticky-note sticky-yellow handwriting p-3 md:p-5 shadow-xl -rotate-2 z-10 transition-transform hover:scale-105 hover:z-20">
+                    <div class="tape"></div>
+                    <p class="text-[10px] text-stone-600 tracking-widest uppercase mb-1 mt-3">Education</p>
+                    <h3 class="text-sm md:text-lg font-bold text-stone-900 leading-tight">Bachelor of Mechatronics Engineering With Honours</h3>
+                    <p class="mt-1 text-xs md:text-sm text-stone-800 leading-relaxed">Tunku Abdul Rahman University of Management and Technology<br>2023 - 2026<br>CGPA: 3.1207</p>
+                </div>
+
+                <div class="absolute top-[5%] left-[45%] w-[35%] sticky-note sticky-blue handwriting p-3 md:p-5 shadow-xl rotate-3 z-10 transition-transform hover:scale-105 hover:z-20">
+                    <div class="tape"></div>
+                    <p class="text-[10px] text-stone-600 tracking-widest uppercase mb-1 mt-3">Education</p>
+                    <h3 class="text-sm md:text-lg font-bold text-stone-900 leading-tight">Diploma of Mechatronic Engineering</h3>
+                    <p class="mt-1 text-xs md:text-sm text-stone-800 leading-relaxed">Tunku Abdul Rahman University of Management and Technology<br>2021 - 2023<br>CGPA: 3.0513</p>
+                </div>
+
+                <div class="absolute top-[30%] left-[60%] w-[35%] sticky-note sticky-pink handwriting p-3 md:p-4 shadow-xl -rotate-1 z-10 transition-transform hover:scale-105 hover:z-20">
+                    <div class="tape"></div>
+                    <p class="text-[10px] text-stone-600 tracking-widest uppercase mb-1 mt-3">Education</p>
+                    <h3 class="text-sm font-bold text-stone-900 leading-tight">Science Stream</h3>
+		    <p class="mt-1 text-xs md:text-sm text-stone-800 leading-relaxed">Chong Hwa Independent High School Kuala Lumpur<br>2015-2019<br>SPM: 2A 7B+ 1B</p>
+                </div>
+
+                <div class="absolute top-[45%] left-[5%] w-[40%] sticky-note sticky-magenta handwriting p-3 md:p-5 shadow-xl -rotate-3 z-10 transition-transform hover:scale-105 hover:z-20">
+                    <div class="tape"></div>
+                    <p class="text-[10px] text-stone-600 tracking-widest uppercase mb-1 mt-3">Skills</p>
+                    <h3 class="text-sm md:text-lg font-bold text-stone-900 leading-tight">Programming</h3>
+                    <ul class="mt-1 list-disc list-inside text-xs md:text-sm text-stone-800 leading-relaxed">
+                        <li>Python</li>
+                        <li>html</li>
+                        <li>Scada system with open source Cloud based Database construction</li>
+                    </ul>
+                </div>
+
+		<div class="absolute top-[55%] left-[55%] w-[40%] sticky-note sticky-silicon handwriting p-3 md:p-5 shadow-xl -rotate-3 z-10 transition-transform hover:scale-105 hover:z-20">
+                    <div class="tape"></div>
+                    <p class="text-[10px] text-stone-600 tracking-widest uppercase mb-1 mt-3">Skills</p>
+                    <h3 class="text-sm md:text-lg font-bold text-stone-900 leading-tight">Judgement in AI usage</h3>
+                    <ul class="mt-1 list-disc list-inside text-xs md:text-sm text-stone-800 leading-relaxed">
+                        <li>Using AI as assistant</li>
+                        <li>Give clear instruction and objective in prompting</li>
+                        <li>Evaluate AI's answer and do fact check</li>
+			<li>Guiding AI toward the correct path</li>
+			<li>Utilise AI for improving work productivity and efficiency</li>
+                    </ul>
+                </div>
+
+		<div class="absolute top-[75%] left-[15%] w-[40%] sticky-note sticky-green handwriting p-3 md:p-5 shadow-xl -rotate-3 z-10 transition-transform hover:scale-105 hover:z-20">
+                    <div class="tape"></div>
+                    <p class="text-[10px] text-stone-600 tracking-widest uppercase mb-1 mt-3">Skills</p>
+                    <h3 class="text-sm md:text-lg font-bold text-stone-900 leading-tight">Engineering Drawing</h3>
+                    <ul class="mt-1 list-disc list-inside text-xs md:text-sm text-stone-800 leading-relaxed">
+                        <li>AutoCAD</li>
+                        <li>Solidwork3D</li>
+                        <li>3D print slicing</li>
+                    </ul>
+                </div>
+
+                </div>
+            </section>
+
+	<!-- === CONNECT SECTION === -->
+        <section id="connect" class="scroll-mt-[10vh] space-y-6 fade-up pb-12">
+            <h2 class="text-xl font-bold text-zinc-100">Connect</h2>
+            
+            <div class="flex flex-wrap items-center gap-8">
+                
+                <!-- GitHub Button -->
+                <a href="https://github.com/peckjianye83-ops" target="_blank" class="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-100 text-zinc-900 text-sm font-semibold hover:bg-white hover:-translate-y-1 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                    </svg>
+                    GitHub
+                    <!-- Top Right Arrow -->
+                    <svg class="w-3.5 h-3.5 ml-1 text-zinc-500 group-hover:text-zinc-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                </a>
+
+                <!-- LinkedIn Button -->
+                <a href="https://www.linkedin.com/in/peck-jian-ye-97815435b/" target="_blank" class="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-100 text-zinc-900 text-sm font-semibold hover:bg-white hover:-translate-y-1 transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                    <svg class="w-5 h-5 text-[#0A66C2]" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    LinkedIn
+                    <!-- Top Right Arrow -->
+                    <svg class="w-3.5 h-3.5 ml-1 text-zinc-500 group-hover:text-zinc-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                </a>
+
+                <!-- Resume Button -->
+                <!-- Note: Kept href="#" so it doesn't navigate anywhere until you are ready -->
+                <a href="#" class="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-zinc-100 text-zinc-900 text-sm font-semibold hover:bg-white hover:-translate-y-1 transition-all duration-300 ring-2 ring-zinc-900 ring-offset-2 ring-offset-zinc-800 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:ring-cyan-400">
+                    <span class="font-black text-[15px] leading-none text-zinc-900">R</span>
+                    Resume
+                    <!-- Top Right Arrow -->
+                    <svg class="w-3.5 h-3.5 ml-1 text-zinc-500 group-hover:text-zinc-900 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                </a>
+            </div>
+        </section>
+ 
+
+
+    </main> 
+    
+    <footer class="max-w-2xl mx-auto pt-12 pb-6 flex flex-col items-center justify-between border-t border-zinc-900 fade-up gap-4 md:flex-row"> 
+            <div class="flex flex-col gap-1">
+                <p class="text-sm text-zinc-900">© 2026 Peck Jian Ye.</p> 
+    
+                <p class="text-xs text-zinc-900">
+                    Background: <a href="https://stockcake.com/" target="_blank" class="hover:text-[#22d3ee] transition-colors">StockCake</a> 
+                    (original: <a href="https://stockcake.com/i/neon-grid-future_1696922_1212497" target="_blank" class="hover:text-[#22d3ee] transition-colors">Neon Grid Future</a>)
+                </p>
+            </div>
+            <p class="text-sm text-zinc-900">peckjianye83@gmail.com</p> 
+        </footer>
+    
+    <script>
+        // 1. FADE-UP ANIMATION LOGIC (Kept exactly as it was)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+        // 2. NEW BULLETPROOF SCROLL NAVIGATOR LOGIC
+        const sections = document.querySelectorAll("header[id], section[id]");
+        const navItems = document.querySelectorAll(".nav-item");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+
+            // Loop through each section to find which one is currently in view
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                
+                // The '300' is a buffer distance. It changes the active dot 
+                // slightly before the section title perfectly hits the top edge.
+                if (window.scrollY >= sectionTop - 300) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            // BOTTOM OF PAGE EXCEPTION
+            // Overrides the logic and forces "Connect" if you hit the absolute bottom
+            const scrollPosition = window.innerHeight + window.scrollY;
+            const bodyHeight = document.documentElement.scrollHeight;
+            if (scrollPosition >= bodyHeight - 10) {
+                current = "connect";
+            }
+
+            // Remove 'active' from all dots, and add it to the 'current' one
+            navItems.forEach((item) => {
+                item.classList.remove("active");
+                if (item.getAttribute("href") === `#${current}`) {
+                    item.classList.add("active");
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+</body> 
+</html>
